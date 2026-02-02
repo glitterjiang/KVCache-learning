@@ -12,5 +12,5 @@ $$Attention(Q,K,V)=softmax({{QK^T}\over\sqrt{d_{key}}}+mask)V$$
 > 为什么Q不用进行cache？
 > 因为除去最新参与计算的一行，其余上面行数的计算结果已经cache了，不再需要也就不用cache
 
-> ==KV Cache中缓存的有K矩阵、V矩阵，那么缓存的有$QK^T$矩阵吗？==
+> ==KV Cache中缓存的有K矩阵、V矩阵，那么缓存的有 $QK^T$ 矩阵吗？==
 
