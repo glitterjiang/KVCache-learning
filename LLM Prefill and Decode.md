@@ -28,10 +28,10 @@ LLM推理有两个阶段：Prefill和Decode。先通过 prefill 完成初始上�
 	- $Score={QK^T\over\sqrt{d_k}}$
 4. 归一化得到注意力权重
 	- 通过 Softmax 函数将分数转为 0-1 之间的概率分布，确保权重和为1：
-	- $Attention\; Weight=Softmax(score)$
+	- $Attention Weight=Softmax(score)$
 5. 加权求和输出结果
 	- 用归一化权重对 $V$ 加权求和，得到融合上下文的最终输出：
-	- $Output=Attention\; Weight \cdot V$
+	- $Output=Attention Weight \cdot V$
 
 整体公式整合：
 $$Self\text{-}Attention(X)=Softmax({XW_Q \cdot (XW_K)^T \over \sqrt {d_K}}) \cdot XW_V$$
