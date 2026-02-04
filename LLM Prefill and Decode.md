@@ -74,12 +74,16 @@ decode 是 prefill 之后的循环阶段。
 3. 每次生成后更新 KV Cache，缓存大小随生成 token 数量递增
 
 ## KV Cache
-- KV Cache 应用于推理阶段（也就是K、V的值是不变的）
-- KV Cache只存在于Decoder解码器中，它的目的是加速Q K V的两次矩阵相乘时的速度
-- KV Cache会加大内存占用
+- KVCache 应用于推理阶段（也就是K、V的值是不变的）
+- KVCache只存在于Decoder解码器中，它的目的是加速Q K V的两次矩阵相乘时的速度
+- KVCache会加大内存占用
+- KVCache 成立条件：简单概括，每一个 token 的输出只依赖于它自己以及之前的输入，与之后的输入无关。（在 transformer 模型中，BERT类 encoder 模型不满足这一性质，GPT 类 decoder 模型因使用了 causal mask 所以满足这一性质）
 
 $$Attention(Q,K,V)=softmax({{QK^T}\over\sqrt{d_{key}}}+mask)V$$
 
+> Q：目前的LLM基本都是 decoder-only 的结构，KVCache是否适用于所有的LLM呢？
+>
+> A：在输入预处理层中，通常会把 token ID 转换成 word embedding，然后加上 positional embedding。问题就出在 positional embedding 上：例如一些 ReRope之类的技术，在增加新的 token 时会把整个序列的 positional embedding 进行调整。**对于同一个 token，上次的 token embedding 和这次的 token embedding 不相同，所以 KVCache 的条件不再成立。**而一旦输入预处理层不满足 KVCache 的条件，后续 transformer 层的输入（即预处理层的输出）就发生了改变，不再适用 KVCache。
 
-
-
+下图展示使用 KVCache 和不使用的对比
+![kvcache](./picture/kvcache.jpg)
