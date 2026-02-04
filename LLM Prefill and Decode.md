@@ -79,9 +79,7 @@ decode 是 prefill 之后的循环阶段。
 - KV Cache会加大内存占用
 
 $$Attention(Q,K,V)=softmax({{QK^T}\over\sqrt{d_{key}}}+mask)V$$
-> 为什么Q不用进行cache？
-> 
-> 因为除去最新参与计算的一行，其余上面行数的计算结果已经cache了，不再需要也就不用cache
+
 
 
 
